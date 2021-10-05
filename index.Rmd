@@ -1,0 +1,28 @@
+---
+title: "Developing Data Products - R Markdown and Leaflet"
+author: "Victor Yeste"
+date: "10/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Major municipalities from Spain
+
+At the next map we can see the six only municipalities from Spain with more than 500.000 people.
+
+```{r cities}
+library(leaflet)
+cities <- data.frame(name = c("Madrid", "Barcelona", "Valencia", "Sevilla", "Zaragoza", "Málaga"),
+    lat = c(40.418889, 41.3825, 39.47, 37.383333, 41.65, 36.716667),
+    lng = c(-3.691944, 2.176944, -0.376389, -5.983333, -0.883333, -4.416667),
+    pop = c(3334730, 1664182, 800215, 691395, 681877, 578460),
+    col = c("red", "red", "blue", "blue", "blue", "blue"))
+cities %>%
+    leaflet() %>%
+    addTiles() %>%
+    addCircles(weight = 1, radius = sqrt(cities$pop) * 30, color = cities$col) %>%
+    addLegend(labels = c("> 1 million", "< 1 million"), colors = c("red", "blue"))
+```
